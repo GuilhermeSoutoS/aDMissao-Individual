@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Membros Cadastrados | Portal da Igreja</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Nunito+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css ">
+</head>
+<body>
+
+  <main class="container-pagina container-pagina--largo">
+    <section class="cartao cartao--largo">
+
+      <div class="logotipo logotipo--pequeno">
+        <img src="assets/logo-ad-missao.png" alt="Logo AD Missão no Brasil">
+      </div>
+
+      <div class="cabecalho-pagina">
+        <div>
+          <p class="rotulo-superior">Assembleia&nbsp;de&nbsp;Deus</p>
+          <h1>Membros cadastrados</h1>
+        </div>
+        <div class="acoes-cabecalho">
+          <a href="cadastro.html" class="botao botao-secundario">Cadastrar novo</a>
+        </div>
+      </div>
+
+      <p class="versiculo" id="contagem-membros"></p>
+
+      <div class="lista-usuarios" id="lista-usuarios"></div>
+
+      <p class="texto-rodape" id="mensagem-vazia" hidden>Nenhum membro cadastrado até o momento.</p>
+
+      <p class="texto-rodape"><a href="index.html" class="link">Voltar para o login</a></p>
+
+    </section>
+
+    <p class="rodape-pagina">Portal do Membro &middot; Igreja Evangélica Assembleia de Deus</p>
+  </main>
+
+  <script src="script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', renderizarListaDeMembros);
+  </script>
+</body>
+</html>

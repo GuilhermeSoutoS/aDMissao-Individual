@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro de Membro | Portal da Igreja</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Nunito+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <main class="container-pagina container-pagina--largo">
+    <section class="cartao cartao--largo">
+
+      <div class="logotipo logotipo--pequeno">
+        <img src="assets/logo-ad-missao.png" alt="Logo AD Missão no Brasil">
+      </div>
+
+      <p class="rotulo-superior">Assembleia de Deus AD Missão</p>
+      <h1>Cadastro de membro</h1>
+      
+      <form class="formulario" id="formulario-cadastro" novalidate>
+
+        <div class="grade-formulario">
+
+          <label class="campo campo-largura-total">
+            <span class="rotulo-campo">Nome completo</span>
+            <input type="text" id="nome" name="nome" placeholder="Nome e sobrenome" autocomplete="name">
+            <span class="mensagem-erro" id="erro-nome"></span>
+          </label>
+
+          <label class="campo">
+            <span class="rotulo-campo">CPF</span>
+            <input type="text" id="cpf" name="cpf" placeholder="000.000.000-00" inputmode="numeric" maxlength="14">
+            <span class="mensagem-erro" id="erro-cpf"></span>
+          </label>
+
+          <label class="campo">
+            <span class="rotulo-campo">RG</span>
+            <input type="text" id="rg" name="rg" placeholder="00.000.000-0" maxlength="15">
+            <span class="mensagem-erro" id="erro-rg"></span>
+          </label>
+
+          <label class="campo">
+            <span class="rotulo-campo">Data de nascimento</span>
+            <input type="date" id="dataNascimento" name="dataNascimento">
+            <span class="mensagem-erro" id="erro-dataNascimento"></span>
+          </label>
+
+          <label class="campo">
+            <span class="rotulo-campo">Cargo na igreja</span>
+            <select id="cargo" name="cargo">
+              <option value="" selected disabled>Selecione um cargo</option>
+              <option value="Membro">Membro</option>
+              <option value="Obreiro(a)">Obreiro(a)</option>
+              <option value="Cooperador(a)">Cooperador(a)</option>
+              <option value="Diácono">Diácono</option>
+              <option value="Diaconisa">Diaconisa</option>
+              <option value="Presbítero">Presbítero</option>
+              <option value="Evangelista">Evangelista</option>
+              <option value="Missionário(a)">Missionário(a)</option>
+              <option value="Pastor">Pastor</option>
+            </select>
+            <span class="mensagem-erro" id="erro-cargo"></span>
+          </label>
+
+          <p class="secao-titulo campo-largura-total">Endereço</p>
+
+          <label class="campo">
+            <span class="rotulo-campo">CEP</span>
+            <input type="text" id="cep" name="cep" placeholder="00000-000" inputmode="numeric" maxlength="9">
+            <span class="mensagem-erro" id="erro-cep"></span>
+          </label>
+
+          <label class="campo">
+            <span class="rotulo-campo">Estado</span>
+            <select id="estado" name="estado">
+              <option value="" selected disabled>UF</option>
+              <option>AC</option><option>AL</option><option>AP</option><option>AM</option>
+              <option>BA</option><option>CE</option><option>DF</option><option>ES</option>
+              <option>GO</option><option>MA</option><option>MT</option><option>MS</option>
+              <option>MG</option><option>PA</option><option>PB</option><option>PR</option>
+              <option>PE</option><option>PI</option><option>RJ</option><option>RN</option>
+              <option>RS</option><option>RO</option><option>RR</option><option>SC</option>
+              <option>SP</option><option>SE</option><option>TO</option>
+            </select>
+            <span class="mensagem-erro" id="erro-estado"></span>
+          </label>
+
+          <label class="campo campo-largura-total">
+            <span class="rotulo-campo">Rua</span>
+            <input type="text" id="rua" name="rua" placeholder="Nome da rua" autocomplete="address-line1">
+            <span class="mensagem-erro" id="erro-rua"></span>
+          </label>
+
+          <label class="campo">
+            <span class="rotulo-campo">Número</span>
+            <input type="text" id="numero" name="numero" placeholder="Nº ou S/N">
+            <span class="mensagem-erro" id="erro-numero"></span>
+          </label>
+
+          <label class="campo">
+            <span class="rotulo-campo">Complemento</span>
+            <input type="text" id="complemento" name="complemento" placeholder="Apto, bloco... (opcional)">
+          </label>
+
+          <label class="campo">
+            <span class="rotulo-campo">Bairro</span>
+            <input type="text" id="bairro" name="bairro" placeholder="Bairro">
+            <span class="mensagem-erro" id="erro-bairro"></span>
+          </label>
+
+          <label class="campo">
+            <span class="rotulo-campo">Cidade</span>
+            <input type="text" id="cidade" name="cidade" placeholder="Cidade">
+            <span class="mensagem-erro" id="erro-cidade"></span>
+          </label>
+
+          <p class="secao-titulo campo-largura-total">Contato e dados pessoais</p>
+
+          <label class="campo">
+            <span class="rotulo-campo">Telefone</span>
+            <input type="text" id="telefone" name="telefone" placeholder="(00) 00000-0000" inputmode="numeric" maxlength="15">
+            <span class="mensagem-erro" id="erro-telefone"></span>
+          </label>
+
+          <div class="campo">
+            <span class="rotulo-campo">Gênero</span>
+            <div class="grupo-genero">
+              <label class="opcao-genero">
+                <input type="checkbox" id="generoFeminino" name="generoFeminino">
+                <span>Feminino</span>
+              </label>
+              <label class="opcao-genero">
+                <input type="checkbox" id="generoMasculino" name="generoMasculino">
+                <span>Masculino</span>
+              </label>
+            </div>
+            <span class="mensagem-erro" id="erro-genero"></span>
+          </div>
+
+        </div>
+
+        <button type="submit" class="botao">Concluir cadastro</button>
+      </form>
+
+      <p class="texto-rodape">Já tem uma conta? <a href="index.html" class="link">Voltar para o login</a></p>
+
+    </section>
+
+    <p class="rodape-pagina">Portal do Membro &middot; Igreja Evangélica Assembleia de Deus</p>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
