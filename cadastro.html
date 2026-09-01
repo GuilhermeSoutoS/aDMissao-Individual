@@ -52,15 +52,7 @@
             <span class="rotulo-campo">Cargo na igreja</span>
             <select id="cargo" name="cargo">
               <option value="" selected disabled>Selecione um cargo</option>
-              <option value="Membro">Membro</option>
-              <option value="Obreiro(a)">Obreiro(a)</option>
-              <option value="Cooperador(a)">Cooperador(a)</option>
-              <option value="Diácono">Diácono</option>
-              <option value="Diaconisa">Diaconisa</option>
-              <option value="Presbítero">Presbítero</option>
-              <option value="Evangelista">Evangelista</option>
-              <option value="Missionário(a)">Missionário(a)</option>
-              <option value="Pastor">Pastor</option>
+              
             </select>
             <span class="mensagem-erro" id="erro-cargo"></span>
           </label>
@@ -77,13 +69,7 @@
             <span class="rotulo-campo">Estado</span>
             <select id="estado" name="estado">
               <option value="" selected disabled>UF</option>
-              <option>AC</option><option>AL</option><option>AP</option><option>AM</option>
-              <option>BA</option><option>CE</option><option>DF</option><option>ES</option>
-              <option>GO</option><option>MA</option><option>MT</option><option>MS</option>
-              <option>MG</option><option>PA</option><option>PB</option><option>PR</option>
-              <option>PE</option><option>PI</option><option>RJ</option><option>RN</option>
-              <option>RS</option><option>RO</option><option>RR</option><option>SC</option>
-              <option>SP</option><option>SE</option><option>TO</option>
+        
             </select>
             <span class="mensagem-erro" id="erro-estado"></span>
           </label>
@@ -151,7 +137,44 @@
 
     <p class="rodape-pagina">Portal do Membro &middot; Igreja Evangélica Assembleia de Deus</p>
   </main>
-
-  <script src="script.js"></script>
 </body>
 </html>
+<script>
+   async function carregarCargo(){
+      const resposta = await fetch("http://localhost:8080/opcoes/cargos")
+
+      const cargos = await resposta.json();
+      const selectCargo = document.getElementById("cargo")
+
+      for(var i = 0; i < cargos.length; i++){
+        const cargo = cargos[i]
+
+        const opcao = document.createElement("option")
+
+        opcao.value = cargo;
+        opcao.textContent = cargo;
+        selectCargo.appendChild(opcao);
+      }
+    }
+
+    async function carregarUf() {
+      const resposta = await fetch("http://localhost:8080/opcoes/uf")
+
+      const estados = await resposta.json();
+      const selectUf = document.getElementById("estado")
+
+      for(var i = 0; i < estados.length; i++){
+        const uf = estados[i];
+
+        const opcao = document.createElement("option");
+
+        opcao.value = uf;
+        opcao.textContent = uf;
+        selectUf.appendChild(opcao);
+
+      }
+    }
+
+    carregarCargo();
+    carregarUf()
+</script>
