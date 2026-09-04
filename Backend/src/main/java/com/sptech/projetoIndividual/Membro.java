@@ -1,9 +1,12 @@
 package com.sptech.projetoIndividual;
 
+
 import java.time.LocalDate;
+import java.util.Date;
 
 public class Membro {
 
+    private Integer id;
     private String nome;
     private String cpf;
     private String rg;
@@ -16,7 +19,8 @@ public class Membro {
     public Membro() {
     }
 
-    public Membro(String nome, String cpf, String rg, LocalDate dataNascimento, Cargo cargo, String telefone, Genero genero, Endereco endereco) {
+    public Membro(Integer id, String nome, String cpf, String rg, LocalDate dataNascimento, Cargo cargo, String telefone, Genero genero, Endereco endereco) {
+        this.id = id;
         this.nome = nome;
         this.cpf = cpf;
         this.rg = rg;
@@ -89,5 +93,13 @@ public class Membro {
 
     public void setEndereco(Endereco endereco) {
         this.endereco = endereco;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

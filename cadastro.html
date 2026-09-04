@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cadastro de Membro | Portal da Igreja</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Nunito+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Nunito+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
   <main class="container-pagina container-pagina--largo">
@@ -19,7 +23,7 @@
 
       <p class="rotulo-superior">Assembleia de Deus AD Missão</p>
       <h1>Cadastro de membro</h1>
-      
+
       <form class="formulario" id="formulario-cadastro" novalidate>
 
         <div class="grade-formulario">
@@ -52,7 +56,7 @@
             <span class="rotulo-campo">Cargo na igreja</span>
             <select id="cargo" name="cargo">
               <option value="" selected disabled>Selecione um cargo</option>
-              
+
             </select>
             <span class="mensagem-erro" id="erro-cargo"></span>
           </label>
@@ -69,7 +73,7 @@
             <span class="rotulo-campo">Estado</span>
             <select id="estado" name="estado">
               <option value="" selected disabled>UF</option>
-        
+
             </select>
             <span class="mensagem-erro" id="erro-estado"></span>
           </label>
@@ -107,7 +111,8 @@
 
           <label class="campo">
             <span class="rotulo-campo">Telefone</span>
-            <input type="text" id="telefone" name="telefone" placeholder="(00) 00000-0000" inputmode="numeric" maxlength="15">
+            <input type="text" id="telefone" name="telefone" placeholder="(00) 00000-0000" inputmode="numeric"
+              maxlength="15">
             <span class="mensagem-erro" id="erro-telefone"></span>
           </label>
 
@@ -138,43 +143,94 @@
     <p class="rodape-pagina">Portal do Membro &middot; Igreja Evangélica Assembleia de Deus</p>
   </main>
 </body>
+
 </html>
 <script>
-   async function carregarCargo(){
-      const resposta = await fetch("http://localhost:8080/opcoes/cargos")
+  async function carregarCargo() {
+    const resposta = await fetch("http://localhost:8080/opcoes/cargos")
 
-      const cargos = await resposta.json();
-      const selectCargo = document.getElementById("cargo")
+    const cargos = await resposta.json();
+    const selectCargo = document.getElementById("cargo")
 
-      for(var i = 0; i < cargos.length; i++){
-        const cargo = cargos[i]
+    for (var i = 0; i < cargos.length; i++) {
+      const cargo = cargos[i]
 
-        const opcao = document.createElement("option")
+      const opcao = document.createElement("option")
 
-        opcao.value = cargo;
-        opcao.textContent = cargo;
-        selectCargo.appendChild(opcao);
-      }
+      opcao.value = cargo;
+      opcao.textContent = cargo;
+      selectCargo.appendChild(opcao);
     }
+  }
 
-    async function carregarUf() {
-      const resposta = await fetch("http://localhost:8080/opcoes/uf")
+  async function carregarUf() {
+    const resposta = await fetch("http://localhost:8080/opcoes/uf")
 
-      const estados = await resposta.json();
-      const selectUf = document.getElementById("estado")
+    const estados = await resposta.json();
+    const selectUf = document.getElementById("estado")
 
-      for(var i = 0; i < estados.length; i++){
-        const uf = estados[i];
+    for (var i = 0; i < estados.length; i++) {
+      const uf = estados[i];
 
-        const opcao = document.createElement("option");
+      const opcao = document.createElement("option");
 
-        opcao.value = uf;
-        opcao.textContent = uf;
-        selectUf.appendChild(opcao);
+      opcao.value = uf;
+      opcao.textContent = uf;
+      selectUf.appendChild(opcao);
 
-      }
     }
+  }
 
-    carregarCargo();
-    carregarUf()
+  async function cadastrar() {
+
+    const membro = {
+      nome: document.getElementById("nome").value,
+      cpf: document.getElementById("cpf").value,
+      rg: document.getElementById("rg").value,
+      dataNascimento: document.getElementById("dataNascimento").value,
+      cargo: document.getElementById("cargo").value,
+      telefone: document.getElementById("telefone").value,
+      genero: document.querySelector('input[name="genero"]:checked').value,
+      endereco: {
+        cep: document.getElementById("cep").value,
+        uf: document.getElementById("estado").value,
+        rua: document.getElementById("rua").value,
+        numero: Number(document.getElementById("numero").value),
+        complemento: document.getElementById("complemento").value,
+        bairro: document.getElementById("bairro").value,
+        cidade: document.getElementById("cidade").value
+      }
+    };
+
+    const resposta = await fetch("http://localhost:8080/membro", {
+
+      method: "POST",
+
+      headers: {
+        "Content-Type": "application/json"
+      },
+
+      body: JSON.stringify(membro)
+
+    });
+
+    if (resposta.ok) {
+
+      const membroCadastrado = await resposta.json();
+
+      console.log("Cadastrado:", membroCadastrado);
+
+      alert("Membro cadastrado com sucesso!");
+
+    } else {
+
+      console.log("Erro:", resposta.status);
+
+      alert("Erro ao cadastrar membro!");
+    }
+  
+  }
+
+  carregarCargo();
+  carregarUf()
 </script>
