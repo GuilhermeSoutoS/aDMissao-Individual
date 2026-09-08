@@ -25,6 +25,80 @@ public class MembroController {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    private boolean validarMembro(Membro membro) {
+
+        if (membro == null) {
+            return false;
+        }
+
+        if (membro.getNome() == null || membro.getNome().trim().isEmpty()) {
+            return false;
+        } else if (membro.getNome().trim().length() < 3) {
+            return false;
+        }
+
+        if (membro.getCpf() == null || membro.getCpf().trim().isEmpty()) {
+            return false;
+        } else if (membro.getCpf().length() > 14 || membro.getCpf().length() <= 0) {
+            return false;
+        }
+
+        if (membro.getRg() == null || membro.getRg().trim().isEmpty()) {
+            return false;
+        }
+
+        if (membro.getDataNascimento() == null) {
+            return false;
+        } else if (membro.getDataNascimento().isAfter(LocalDate.now())) {
+            return false;
+        }
+
+        if (membro.getCargo() == null) {
+            return false;}
+
+        if (membro.getEndereco() == null) {
+            return false;
+        }
+
+        if (membro.getEndereco().getCep() == null || membro.getEndereco().getCep().trim().isEmpty()) {
+            return false;
+        } else if (membro.getEndereco().getCep().length() > 9 || (membro.getEndereco().getCep().length() <= 0)) {
+            return false;
+        }
+
+        if (membro.getEndereco().getUf() == null) {
+            return false;
+        }
+
+        if (membro.getEndereco().getRua() == null || membro.getEndereco().getRua().trim().isEmpty()) {
+            return false;
+        }
+
+        if (membro.getEndereco().getNumero() == null || membro.getEndereco().getNumero() <= 0) {
+            return false;
+        }
+
+        if (membro.getEndereco().getBairro() == null || membro.getEndereco().getBairro().trim().isEmpty()) {
+            return false;
+        }
+
+        if (membro.getEndereco().getCidade() == null || membro.getEndereco().getCidade().trim().isEmpty()) {
+            return false;
+        }
+
+        if (membro.getTelefone() == null || membro.getTelefone().trim().isEmpty()) {
+            return false;
+        } else if (membro.getTelefone().length() != 15) {
+            return false;
+        }
+
+        if (membro.getGenero() == null) {
+            return false;
+        }
+
+        return true;
+    }
+
 
     @GetMapping
     public ResponseEntity<List<Membro>> listar(){
@@ -70,7 +144,11 @@ public class MembroController {
     public ResponseEntity<Void> deletarMembro(@PathVariable Integer id){
         String sql = "DELETE FROM membro WHERE id = ?";
 
-        jdbcTemplate.update(sql, id);
+        int usuariosDeletados = jdbcTemplate.update(sql, id);
+
+        if (usuariosDeletados == 0) {
+            return ResponseEntity.status(404).build();
+        }
 
         return ResponseEntity.status(204).build();
     }
@@ -78,6 +156,11 @@ public class MembroController {
     @PostMapping
     public ResponseEntity<Membro> cadastrar(@RequestBody Membro membroCadastrar){
         String sql = "INSERT INTO membro (nome, cpf , rg, data_nascimento, cargo , cep, uf, rua, numero , complemento, bairro, cidade, telefone, genero ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+
+
+        if (!validarMembro(membroCadastrar)) {
+            return ResponseEntity.status(400).build();
+        }
 
         Endereco endereco = membroCadastrar.getEndereco();
 
