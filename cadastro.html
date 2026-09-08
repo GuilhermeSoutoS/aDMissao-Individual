@@ -86,7 +86,7 @@
 
           <label class="campo">
             <span class="rotulo-campo">Número</span>
-            <input type="text" id="numero" name="numero" placeholder="Nº ou S/N">
+            <input type="number" id="numero" name="numero" placeholder="0000">
             <span class="mensagem-erro" id="erro-numero"></span>
           </label>
 
@@ -120,11 +120,12 @@
             <span class="rotulo-campo">Gênero</span>
             <div class="grupo-genero">
               <label class="opcao-genero">
-                <input type="checkbox" id="generoFeminino" name="generoFeminino">
+                <input type="radio" id="generoFeminino" name="genero" value="FEMININO">
                 <span>Feminino</span>
               </label>
+
               <label class="opcao-genero">
-                <input type="checkbox" id="generoMasculino" name="generoMasculino">
+                <input type="radio" id="generoMasculino" name="genero" value="MASCULINO">
                 <span>Masculino</span>
               </label>
             </div>
@@ -183,23 +184,233 @@
 
   async function cadastrar() {
 
-    const membro = {
-      nome: document.getElementById("nome").value,
-      cpf: document.getElementById("cpf").value,
-      rg: document.getElementById("rg").value,
-      dataNascimento: document.getElementById("dataNascimento").value,
-      cargo: document.getElementById("cargo").value,
-      telefone: document.getElementById("telefone").value,
-      genero: document.querySelector('input[name="genero"]:checked').value,
-      endereco: {
-        cep: document.getElementById("cep").value,
-        uf: document.getElementById("estado").value,
-        rua: document.getElementById("rua").value,
-        numero: Number(document.getElementById("numero").value),
-        complemento: document.getElementById("complemento").value,
-        bairro: document.getElementById("bairro").value,
-        cidade: document.getElementById("cidade").value
+
+
+    event.preventDefault();
+
+
+    document.querySelectorAll(".mensagem-erro").forEach(function (elemento) {
+      elemento.textContent = "";
+    });
+
+    var valido = true;
+
+    var genero;
+
+    const feminino = document.getElementById("generoFeminino");
+    const masculino = document.getElementById("generoMasculino");
+
+    if (feminino.checked) {
+      genero = "FEMININO";
+    } else if (masculino.checked) {
+      genero = "MASCULINO";
+    }
+
+    var nome = document.getElementById("nome").value
+    var cpf = document.getElementById("cpf").value
+    var rg = document.getElementById("rg").value
+    var dataNascimento = document.getElementById("dataNascimento").value
+    var cargo = document.getElementById("cargo").value
+    var telefone = document.getElementById("telefone").value
+    var cep = document.getElementById("cep").value
+    var uf = document.getElementById("estado").value
+    var rua = document.getElementById("rua").value
+    var numero = document.getElementById("numero").value;
+    var complemento = document.getElementById("complemento").value
+    var bairro = document.getElementById("bairro").value
+    var cidade = document.getElementById("cidade").value
+
+    if (nome == "") {
+      document.getElementById("erro-nome").textContent =
+        "O nome é obrigatório.";
+      valido = false;
+
+    } else if (nome.length < 3) {
+      document.getElementById("erro-nome").textContent =
+        "O nome deve ter pelo menos 3 caracteres.";
+      valido = false;
+    }
+
+    if (cpf == "") {
+
+      document.getElementById("erro-cpf").textContent =
+        "O CPF é obrigatório.";
+
+      valido = false;
+
+    } else if (cpf.length != 11) {
+
+      document.getElementById("erro-cpf").textContent =
+        "O CPF deve ter 14 caracteres.";
+
+      valido = false;
+
+    } else if (!/^\d+$/.test(cpf.replace(/\./g, "").replace("-", ""))) {
+
+      document.getElementById("erro-cpf").textContent =
+        "O CPF não pode conter letras.";
+
+      valido = false;
+    }
+
+    if (rg == "") {
+      document.getElementById("erro-rg").textContent =
+        "O RG é obrigatório.";
+      valido = false;
+    }
+
+    if (dataNascimento == "") {
+
+      document.getElementById("erro-dataNascimento").textContent =
+        "A data de nascimento é obrigatória.";
+
+      valido = false;
+
+    } else {
+
+      const data = new Date(dataNascimento + "T00:00:00");
+      const hoje = new Date();
+
+      hoje.setHours(0, 0, 0, 0);
+
+      if (data > hoje) {
+        document.getElementById("erro-dataNascimento").textContent =
+          "A data de nascimento não pode ser futura.";
+
+        valido = false;
       }
+    }
+
+
+    if (cargo == "") {
+      document.getElementById("erro-cargo").textContent =
+        "Selecione um cargo.";
+      valido = false;
+    }
+    if (cep == "") {
+
+      document.getElementById("erro-cep").textContent =
+        "O CEP é obrigatório.";
+
+      valido = false;
+
+    } else if (cep.length != 8) {
+
+      document.getElementById("erro-cep").textContent =
+        "O CEP deve ter 9 caracteres.";
+
+      valido = false;
+
+    } else if (!/^\d+$/.test(cep.replace("-", ""))) {
+
+      document.getElementById("erro-cep").textContent =
+        "O CEP não pode conter letras.";
+
+      valido = false;
+    }
+
+    if (uf == "") {
+      document.getElementById("erro-estado").textContent =
+        "Selecione um estado.";
+      valido = false;
+    }
+
+    if (rua == "") {
+      document.getElementById("erro-rua").textContent =
+        "A rua é obrigatória.";
+      valido = false;
+    }
+
+
+    if (numero == "") {
+
+      document.getElementById("erro-numero").textContent =
+        "O número é obrigatório.";
+
+      valido = false;
+
+    } else if (Number(numero) <= 0) {
+
+      document.getElementById("erro-numero").textContent =
+        "O número deve ser maior que 0.";
+
+      valido = false;
+    }
+
+    if (bairro == "") {
+      document.getElementById("erro-bairro").textContent =
+        "O bairro é obrigatório.";
+      valido = false;
+    }
+
+    if (cidade == "") {
+      document.getElementById("erro-cidade").textContent =
+        "A cidade é obrigatória.";
+      valido = false;
+    }
+
+    if (telefone == "") {
+
+      document.getElementById("erro-telefone").textContent =
+        "O telefone é obrigatório.";
+
+      valido = false;
+
+    } else if (telefone.length != 11) {
+
+      document.getElementById("erro-telefone").textContent =
+        "O telefone deve ter 15 caracteres.";
+
+      valido = false;
+
+    } else if (!/^\d+$/.test(
+      telefone.replace("(", "")
+        .replace(")", "")
+        .replace(" ", "")
+        .replace("-", "")
+    )) {
+
+      document.getElementById("erro-telefone").textContent =
+        "O telefone não pode conter letras.";
+
+      valido = false;
+    }
+
+
+    if (!feminino.checked && !masculino.checked) {
+
+      document.getElementById("erro-genero").textContent =
+        "Selecione um gênero.";
+
+      valido = false;
+    }
+
+    if (!valido) {
+      return;
+    }
+
+
+    const membro = {
+
+      nome: nome,
+      cpf: cpf,
+      rg: rg,
+      dataNascimento: dataNascimento,
+      cargo: cargo,
+      telefone: telefone,
+      genero: genero,
+
+      endereco: {
+
+        cep: cep,
+        uf: uf,
+        rua: rua,
+        numero: Number(numero),
+        complemento: document.getElementById("complemento").value.trim(),
+        bairro: bairro,
+        cidade: cidade
+      }
+
     };
 
     const resposta = await fetch("http://localhost:8080/membro", {
@@ -222,15 +433,20 @@
 
       alert("Membro cadastrado com sucesso!");
 
+      window.location.href = "usuarios.html"
+
     } else {
 
       console.log("Erro:", resposta.status);
 
       alert("Erro ao cadastrar membro!");
     }
-  
+
   }
+
+
 
   carregarCargo();
   carregarUf()
+  document.getElementById("formulario-cadastro").addEventListener("submit", cadastrar);
 </script>

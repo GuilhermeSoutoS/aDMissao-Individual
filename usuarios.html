@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Membros Cadastrados | Portal da Igreja</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Nunito+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Nunito+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="style.css ">
 </head>
+
 <body>
 
   <main class="container-pagina container-pagina--largo">
@@ -27,6 +31,8 @@
         </div>
       </div>
 
+
+
       <p class="versiculo" id="contagem-membros"></p>
 
       <div class="lista-usuarios" id="lista-usuarios"></div>
@@ -40,9 +46,246 @@
     <p class="rodape-pagina">Portal do Membro &middot; Igreja Evangélica Assembleia de Deus</p>
   </main>
 
-  <script src="script.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', renderizarListaDeMembros);
-  </script>
+  <div class="modal" id="modal-membro">
+
+    <div class="modal-conteudo">
+
+      <button class="fechar-modal" id="fechar-modal">&times;</button>
+
+      <h2 id="modal-nome"></h2>
+
+      <div class="informacoes-membro">
+
+        <p>
+          <strong>CPF:</strong>
+          <span id="modal-cpf"></span>
+        </p>
+
+        <p>
+          <strong>RG:</strong>
+          <span id="modal-rg"></span>
+        </p>
+
+        <p>
+          <strong>Data de nascimento:</strong>
+          <span id="modal-data-nascimento"></span>
+        </p>
+
+        <p>
+          <strong>Cargo:</strong>
+          <span id="modal-cargo"></span>
+        </p>
+
+        <p>
+          <strong>Telefone:</strong>
+          <span id="modal-telefone"></span>
+        </p>
+
+        <p>
+          <strong>Gênero:</strong>
+          <span id="modal-genero"></span>
+        </p>
+
+        <hr>
+
+        <h3>Endereço</h3>
+
+        <p>
+          <strong>CEP:</strong>
+          <span id="modal-cep"></span>
+        </p>
+
+        <p>
+          <strong>Rua:</strong>
+          <span id="modal-rua"></span>
+        </p>
+
+        <p>
+          <strong>Número:</strong>
+          <span id="modal-numero"></span>
+        </p>
+
+        <p>
+          <strong>Complemento:</strong>
+          <span id="modal-complemento"></span>
+        </p>
+
+        <p>
+          <strong>Bairro:</strong>
+          <span id="modal-bairro"></span>
+        </p>
+
+        <p>
+          <strong>Cidade:</strong>
+          <span id="modal-cidade"></span>
+        </p>
+
+        <p>
+          <strong>UF:</strong>
+          <span id="modal-uf"></span>
+        </p>
+
+      </div>
+
+      <div class="acoes-modal">
+
+        <button class="botao-modal botao-deletar" id="botao-deletar">
+          🗑 Deletar
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
 </body>
+
 </html>
+<script>
+
+  let membroSelecionado = null;
+
+  async function renderizarListaDeMembros() {
+
+
+    const resposta = await fetch("http://localhost:8080/membro");
+
+    if (!resposta.ok) {
+      console.log("Erro ao buscar membros:", resposta.status);
+      return;
+    }
+
+    const membros = await resposta.json();
+
+    const lista = document.getElementById("lista-usuarios");
+    const contagem = document.getElementById("contagem-membros");
+    const mensagemVazia = document.getElementById("mensagem-vazia");
+
+    lista.innerHTML = "";
+
+    if (membros.length === 0) {
+
+      mensagemVazia.hidden = false;
+      contagem.textContent = "Nenhum membro cadastrado";
+
+      return;
+    }
+
+    mensagemVazia.hidden = true;
+
+    contagem.textContent =
+      `${membros.length} membro(s) cadastrado(s)`;
+
+
+    for (let i = 0; i < membros.length; i++) {
+
+      const membro = membros[i];
+
+      const usuario = document.createElement("div");
+
+      usuario.classList.add("usuario");
+
+      usuario.innerHTML = `
+        <h2>${membro.nome}</h2>
+        <p>${membro.cargo}</p>
+    `;
+
+      usuario.addEventListener("click", function () {
+        abrirModal(membro);
+      });
+
+      lista.appendChild(usuario);
+    }
+  }
+
+
+  async function deletarMembro() {
+
+    if (!membroSelecionado) {
+      return;
+    }
+
+    const confirmar = confirm(
+      `Deseja realmente excluir o membro ${membroSelecionado.nome}?`
+    );
+
+    if (!confirmar) {
+      return;
+    }
+
+    const resposta = await fetch(
+      `http://localhost:8080/membro/${membroSelecionado.id}`,
+      {
+        method: "DELETE"
+      }
+    );
+
+    if (resposta.status === 204) {
+      alert("Membro excluído com sucesso!");
+
+      document.getElementById("modal-membro").classList.remove("ativo");
+
+      membroSelecionado = null;
+
+      renderizarListaDeMembros();
+
+    } else if (resposta.status === 404) {
+
+      alert("Membro não encontrado.");
+
+    } else {
+
+      alert("Erro ao excluir o membro.");
+      console.log("Status:", resposta.status);
+    }
+  }
+
+
+  function abrirModal(membro) {
+
+    membroSelecionado = membro;
+
+    document.getElementById("modal-nome").textContent = membro.nome;
+    document.getElementById("modal-cpf").textContent = membro.cpf;
+    document.getElementById("modal-rg").textContent = membro.rg;
+    document.getElementById("modal-data-nascimento").textContent = membro.dataNascimento;
+    document.getElementById("modal-cargo").textContent = membro.cargo;
+    document.getElementById("modal-telefone").textContent = membro.telefone;
+    document.getElementById("modal-genero").textContent = membro.genero;
+
+    document.getElementById("modal-cep").textContent = membro.endereco?.cep || "-";
+    document.getElementById("modal-rua").textContent = membro.endereco?.rua || "-";
+    document.getElementById("modal-numero").textContent = membro.endereco?.numero || "-";
+    document.getElementById("modal-complemento").textContent = membro.endereco?.complemento || "-";
+    document.getElementById("modal-bairro").textContent = membro.endereco?.bairro || "-";
+    document.getElementById("modal-cidade").textContent = membro.endereco?.cidade || "-";
+    document.getElementById("modal-uf").textContent = membro.endereco?.uf || "-";
+
+    document.getElementById("modal-membro").classList.add("ativo");
+  }
+  document.addEventListener(
+    "DOMContentLoaded",
+    renderizarListaDeMembros
+  );
+
+  document.getElementById("fechar-modal").addEventListener("click", function () {
+
+    document.getElementById("modal-membro").classList.remove("ativo");
+
+  });
+
+
+  document.getElementById("modal-membro").addEventListener("click", function (event) {
+
+    if (event.target === this) {
+      this.classList.remove("ativo");
+    }
+
+  });
+
+  document.getElementById("botao-deletar").addEventListener("click", deletarMembro);
+
+
+</script>

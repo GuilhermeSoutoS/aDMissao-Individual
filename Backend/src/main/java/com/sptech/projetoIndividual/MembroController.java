@@ -30,10 +30,49 @@ public class MembroController {
     public ResponseEntity<List<Membro>> listar(){
         String sql = "Select * from membro";
 
-        List<Membro> membros = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Membro.class));
+        List<Membro> membros = jdbcTemplate.query(sql, (rs, rowNum) -> {
+
+            Membro membro = new Membro();
+
+            membro.setId(rs.getInt("id"));
+            membro.setNome(rs.getString("nome"));
+            membro.setCpf(rs.getString("cpf"));
+            membro.setRg(rs.getString("rg"));
+            membro.setDataNascimento(rs.getDate("data_nascimento").toLocalDate());
+            membro.setCargo(Cargo.valueOf(rs.getString("cargo")));
+            membro.setTelefone(rs.getString("telefone"));
+            membro.setGenero(Genero.valueOf(rs.getString("genero")));
+
+            Endereco endereco = new Endereco();
+
+            endereco.setCep(rs.getString("cep"));
+            endereco.setRua(rs.getString("rua"));
+            endereco.setNumero(rs.getInt("numero"));
+            endereco.setComplemento(rs.getString("complemento"));
+            endereco.setBairro(rs.getString("bairro"));
+            endereco.setCidade(rs.getString("cidade"));
+            endereco.setUf(Uf.valueOf(rs.getString("uf"))
+            );
+
+
+            membro.setEndereco(endereco);
+
+
+            return membro;
+        });
 
         return ResponseEntity.status(200).body(membros);
 
+    }
+
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletarMembro(@PathVariable Integer id){
+        String sql = "DELETE FROM membro WHERE id = ?";
+
+        jdbcTemplate.update(sql, id);
+
+        return ResponseEntity.status(204).build();
     }
 
     @PostMapping
@@ -69,6 +108,8 @@ public class MembroController {
         membroCadastrar.setId(idGerado);
         return ResponseEntity.status(201).body(membroCadastrar);
     }
+
+
 
 
 
