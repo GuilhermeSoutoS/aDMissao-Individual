@@ -36,7 +36,7 @@
 
           <label class="campo">
             <span class="rotulo-campo">CPF</span>
-            <input type="text" id="cpf" name="cpf" placeholder="000.000.000-00" inputmode="numeric" maxlength="14">
+            <input type="text" id="cpf" name="cpf" placeholder="000.000.000-00" inputmode="numeric" maxlength="11">
             <span class="mensagem-erro" id="erro-cpf"></span>
           </label>
 
@@ -65,7 +65,7 @@
 
           <label class="campo">
             <span class="rotulo-campo">CEP</span>
-            <input type="text" id="cep" name="cep" placeholder="00000-000" inputmode="numeric" maxlength="9">
+            <input type="text" id="cep" name="cep" placeholder="00000-000" inputmode="numeric" maxlength="8">
             <span class="mensagem-erro" id="erro-cep"></span>
           </label>
 
@@ -112,7 +112,7 @@
           <label class="campo">
             <span class="rotulo-campo">Telefone</span>
             <input type="text" id="telefone" name="telefone" placeholder="(00) 00000-0000" inputmode="numeric"
-              maxlength="15">
+              maxlength="11">
             <span class="mensagem-erro" id="erro-telefone"></span>
           </label>
 
@@ -136,8 +136,6 @@
 
         <button type="submit" class="botao">Concluir cadastro</button>
       </form>
-
-      <p class="texto-rodape">Já tem uma conta? <a href="index.html" class="link">Voltar para o login</a></p>
 
     </section>
 
@@ -181,6 +179,25 @@
 
     }
   }
+
+
+document.getElementById("cpf").addEventListener("input", function () {
+    this.value = this.value.replace(/[a-zA-Z]/g, "");
+});
+
+
+document.getElementById("cep").addEventListener("input", function () {
+    this.value = this.value.replace(/[a-zA-Z]/g, "");
+});
+
+
+document.getElementById("telefone").addEventListener("input", function () {
+    this.value = this.value.replace(/[a-zA-Z]/g, "");
+});
+
+document.getElementById("rg").addEventListener("input", function () {
+    this.value = this.value.replace(/[a-zA-Z]/g, "");
+});
 
   async function cadastrar() {
 
@@ -241,16 +258,10 @@
     } else if (cpf.length != 11) {
 
       document.getElementById("erro-cpf").textContent =
-        "O CPF deve ter 14 caracteres.";
+        "O CPF deve ter 11 caracteres.";
 
       valido = false;
 
-    } else if (!/^\d+$/.test(cpf.replace(/\./g, "").replace("-", ""))) {
-
-      document.getElementById("erro-cpf").textContent =
-        "O CPF não pode conter letras.";
-
-      valido = false;
     }
 
     if (rg == "") {
@@ -297,17 +308,11 @@
     } else if (cep.length != 8) {
 
       document.getElementById("erro-cep").textContent =
-        "O CEP deve ter 9 caracteres.";
+        "O CEP deve ter 8 caracteres.";
 
       valido = false;
 
-    } else if (!/^\d+$/.test(cep.replace("-", ""))) {
-
-      document.getElementById("erro-cep").textContent =
-        "O CEP não pode conter letras.";
-
-      valido = false;
-    }
+    } 
 
     if (uf == "") {
       document.getElementById("erro-estado").textContent =
@@ -359,21 +364,10 @@
     } else if (telefone.length != 11) {
 
       document.getElementById("erro-telefone").textContent =
-        "O telefone deve ter 15 caracteres.";
+        "O telefone deve ter 11 caracteres.";
 
       valido = false;
 
-    } else if (!/^\d+$/.test(
-      telefone.replace("(", "")
-        .replace(")", "")
-        .replace(" ", "")
-        .replace("-", "")
-    )) {
-
-      document.getElementById("erro-telefone").textContent =
-        "O telefone não pode conter letras.";
-
-      valido = false;
     }
 
 

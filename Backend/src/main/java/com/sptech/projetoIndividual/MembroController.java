@@ -158,8 +158,8 @@ public class MembroController {
         String sql = "INSERT INTO membro (nome, cpf , rg, data_nascimento, cargo , cep, uf, rua, numero , complemento, bairro, cidade, telefone, genero ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
 
-        if (!validarMembro(membroCadastrar)) {
-            return ResponseEntity.status(400).build();
+        if (validarMembro(membroCadastrar)) {
+            return ResponseEntity.status(409).build();
         }
 
         Endereco endereco = membroCadastrar.getEndereco();

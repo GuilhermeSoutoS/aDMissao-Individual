@@ -2,9 +2,9 @@
 
 ## Sobre o projeto
 
-O Portal do Membro é uma aplicação web desenvolvida para realizar o cadastro e o gerenciamento dos membros de uma igreja.
+O Portal do Membro é uma aplicação web desenvolvida para realizar o cadastro e o gerenciamento dos membros da igreja Assembleia de Deus ministério Missão.
 
-O sistema permite cadastrar membros, consultar os membros cadastrados, pesquisar membros pelo nome e excluir um cadastro.
+O sistema permite cadastrar membros, visualizar os membros cadastrados e excluir um cadastro.
 
 O projeto foi desenvolvido utilizando uma arquitetura cliente-servidor, onde o frontend é responsável pela interface com o usuário e o backend disponibiliza uma API REST responsável pelo processamento das informações e comunicação com o banco de dados.
 
@@ -55,17 +55,6 @@ No frontend, as validações impedem que o usuário envie o formulário com camp
 
 No backend, as mesmas regras são verificadas novamente. Isso garante que a API também rejeite requisições inválidas feitas diretamente por ferramentas como Bruno, Postman ou outras aplicações.
 
-Entre as validações estão:
-
-- Nome deve possuir pelo menos 3 caracteres.
-- CPF deve possuir 14 caracteres e não pode conter letras.
-- Data de nascimento não pode ser futura.
-- Cargo deve ser selecionado.
-- CEP deve possuir 9 caracteres e não pode conter letras.
-- Estado deve ser selecionado.
-- Número deve ser maior que 0.
-- Telefone deve possuir 15 caracteres e não pode conter letras.
-- Gênero deve ser selecionado.
 
 ---
 
